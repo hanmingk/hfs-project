@@ -1,0 +1,11 @@
+块服务器提供对外功能
+1. tcp replica_copy(replica_id: u64) -> Result<(), Error>
+对外副本拷贝能力，其他块服务器请求复制它的数据块，该服务器向其他服务器发送数据的同时会检查该数据块的正确性，
+如果发现错误则会停止传输，并向master服务器汇报自己的块损坏，当其他块服务器并没有接收到完整块时则认为该块恢复失败，
+同时向master服务器发送块的损坏。
+
+2. rpc recover_replica(src_id: u64, target_id: u64, target_addr: SocketAddr) -> Result((), Error)
+提供给master服务器通知块服务器恢复损坏的块，块服务器恢复成功后主动向master服务器汇报自己该块的状态。
+
+3. rpc upload_replica(replica_id: u64) ->  Result<(), Error>
+chunk服务器接收到块上传请求时，先向master服务器获取该块的租约，获取成功则返回成功，并开始续约

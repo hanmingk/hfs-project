@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package lease;
+
+service Lease {
+    rpc LeaseGrant(LeaseGrantRequest) returns (LeaseGrantResponse);
+
+    rpc LeaseRevoke(LeaseRevokeRequest) returns (LeaseRevokeResponse);
+  
+    rpc LeaseKeepAlive(LeaseKeepAliveRequest) returns (LeaseKeepAliveResponse);
+
+    rpc ResourceLock(ResourceLockRequest) returns (ResourceLockResponse);
+
+    rpc ResourceUnlock(ResourceUnlockRequest) returns (ResourceUnlockResponse);
+}
+
+message LeaseGrantRequest {
+    uint64 ttl = 1;
+}
+
+message LeaseGrantResponse {
+    int64 id = 1;
+    uint64 ttl = 2;
+}
+
+message LeaseRevokeRequest {
+    int64 id = 1;
+}
+
+message LeaseRevokeResponse {
+    
+}
+
+message LeaseKeepAliveRequest {
+    int64 id = 1;
+    uint64 ttl = 2;
+}
+
+message LeaseKeepAliveResponse {
+    uint64 ttl = 1;
+}
+
+message ResourceLockRequest {
+    int64 lease_id = 1;
+    string rsrc_key = 2;
+}
+
+message ResourceLockResponse {
+
+}
+
+message ResourceUnlockRequest {
+    int64 lease_id = 1;
+    string rsrc_key = 2;
+}
+
+message ResourceUnlockResponse {
+
+}

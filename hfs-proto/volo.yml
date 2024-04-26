@@ -1,0 +1,23 @@
+entries:
+  proto:
+    protocol: protobuf
+    filename: proto_gen.rs
+    touch_all: false
+    nonstandard_snake_case: false
+    idls:
+      - source: local
+        path: ./protos/master.proto
+        includes:
+          - ./protos
+      - source: local
+        path: ./protos/chunk.proto
+        includes:
+          - ./protos
+      - source: local
+        path: ./protos/lease.proto
+        includes:
+          - ./protos
+      - source: local
+        path: ./protos/cluster.proto
+        includes:
+          - ./protos

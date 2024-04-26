@@ -1,0 +1,21 @@
+[package]
+name = "hfs-server"
+version.workspace = true
+edition.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+hfs-proto = { path = "../hfs-proto" }
+# hfs-util = { path = "../hfs-util" }
+
+bytes.workspace = true
+volo-grpc.workspace = true
+volo.workspace = true
+ahash.workspace = true
+tokio = { workspace = true, features = ["full"] }
+tracing.workspace = true
+tracing-subscriber.workspace = true
+lazy_static.workspace = true
+
+crc = "3"

@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package cluster;
+
+service Cluster {
+    rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
+
+    rpc MemberAdd(MemberAddRequest) returns (MemberAddResponse);
+
+    rpc MemberRemove(MemberRemoveRequest) returns (MemberRemoveResponse);
+
+    rpc ServiceAddr(ServiceAddrRequest) returns (ServiceAddrResponse);
+}
+
+message HeartbeatRequest {
+    uint32 server_id = 1;
+    float cpu_load = 2;
+    float disk_load = 3;
+    float network_load = 4;
+}
+
+message HeartbeatResponse {
+
+}
+
+message MemberAddRequest {
+    uint32 server_id = 1;
+    string addr = 2;
+
+    message ServicePort {
+        ServiceType service_type = 1;
+        uint32 port = 2;
+    }
+
+    repeated ServicePort service_ports = 3;
+}
+
+message MemberAddResponse {
+    uint32 server_id = 1;
+}
+
+message MemberRemoveRequest {
+    uint32 server_id = 1;
+}
+
+message MemberRemoveResponse {
+    
+}
+
+enum ServiceType {
+    RPC = 1;
+    TCP = 2;
+}
+
+message ServiceAddrRequest {
+    uint32 server_id = 1;
+    ServiceType service_type = 2;
+}
+
+message ServiceAddrResponse {
+    string socket_addr = 1;
+}

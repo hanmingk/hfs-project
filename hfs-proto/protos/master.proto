@@ -1,0 +1,230 @@
+syntax = "proto3";
+
+package master;
+
+import "chunk.proto";
+
+service FileSystem {
+    rpc CreateFile(CreateFileRequest) returns (CreateFileResponse);
+
+    rpc RemoveFile(RemoveFileRequest) returns (RemoveFileResponse);
+
+    rpc CreateDirectory(CreateDirectoryRequest) returns (CreateDirectoryResponse);
+
+    rpc RemoveDirectory(RemoveDirectoryRequest) returns (RemoveDirectoryResponse);
+
+    rpc MovePath(MovePathRequest) returns (MovePathResponse);
+
+    rpc OpenFile(OpenFileRequest) returns (OpenFileResponse);
+
+    rpc CloseFile(CloseFileRequest) returns (CloseFileResponse);
+
+    rpc ListDirectory(ListDirectoryRequest) returns (ListDirectoryResponse);
+
+    rpc ContainsPath(ContainsPathRequest) returns (ContainsPathResponse); 
+}
+
+service Auth {
+    rpc SignIn(SignInRequest) returns (SignInResponse);
+
+    rpc KeepHeartbeat(KeepHeartbeatRequest) returns (KeepHeartbeatResponse);
+
+    rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+
+    rpc RemoveUser(RemoveUserRequest) returns (RemoveUserResponse);
+
+    rpc CreateGroup(CreateGroupRequest) returns (CreateGroupResponse);
+
+    rpc RemoveGroup(RemoveGroupRequest) returns (RemoveGroupResponse);
+
+    rpc GroupAddUser(GroupAddUserRequest) returns (GroupAddUserResponse);
+
+    rpc GroupRmUser(GroupRmUserRequest) returns (GroupRmUserResponse);
+}
+
+enum O_P_Permissions {
+    READ_ONLY = 1;
+    WRITE_ONLY = 2;
+    READ_WITH_WRITE = 3;
+    NO_PERMISSIONS = 4;
+}
+
+message FileMetaInfo {
+    string src = 1;
+    string name = 2;
+    uint64 len = 3;
+    uint64 mdfc_time = 4;
+    uint64 acs_time = 5;
+    string owner = 6;
+    string group = 7;
+    repeated O_P_Permissions perms = 8;
+    repeated chunk.ChunkMetaInfo chunks = 9;
+
+    int64 file_id = 10;
+}
+
+message CreateFileRequest{
+    string token = 1;
+    string file_path = 2;
+} 
+
+message CreateFileResponse{
+
+}
+
+message RemoveFileRequest{
+    string token = 1;
+    string file_path = 2;
+}
+
+message RemoveFileResponse{
+
+}
+
+message CreateDirectoryRequest{
+    string token = 1;
+    string dir_path = 2;
+    bool parent = 3;
+} 
+
+message CreateDirectoryResponse{
+
+}
+
+message RemoveDirectoryRequest{
+    string token = 1;
+    string dir_path = 2;
+} 
+
+message RemoveDirectoryResponse{
+
+}
+
+message MovePathRequest {
+    string token = 1;
+    string src_path = 2;
+    string target_path  = 3;
+}
+
+message MovePathResponse {
+
+}
+
+message OpenFileRequest{
+    string token = 1;
+    string file_path = 2;
+    int64 lease_id = 3;
+}
+
+message OpenFileResponse{
+    FileMetaInfo meta_info = 1;
+}
+
+message CloseFileRequest{
+    int64 lease_id = 1;
+    int64 file_id = 2;
+    repeated int64 chunk_ids = 3;
+}
+
+message CloseFileResponse{
+
+}
+
+message ListDirectoryRequest {
+    string path = 1;
+}
+
+message ListDirectoryResponse {
+    message ListItem {
+        repeated O_P_Permissions perms = 1;
+        string owner = 2;
+        string group = 3;
+        uint64 update_time = 4;
+        string name = 5;
+        bool is_dir = 6;
+    }
+
+    repeated ListItem items = 1;
+}
+
+message ContainsPathRequest {
+    string path = 1;
+}
+
+message ContainsPathResponse {
+    bool is_dir = 2;
+}
+
+message SignInRequest{
+    string username = 1;
+    string passwd = 2;
+}
+
+message SignInResponse{
+    string token = 1;
+}
+
+message KeepHeartbeatRequest {
+    string token = 1;
+}
+
+message KeepHeartbeatResponse {
+    
+}
+
+message CreateUserRequest{
+    string token = 1;
+    string username = 2;
+    string passwd = 3;
+}
+
+message CreateUserResponse{
+
+}
+
+message RemoveUserRequest{
+    string token = 1;
+    string username = 2;
+}
+
+message RemoveUserResponse{
+
+}
+
+message CreateGroupRequest{
+    string token = 1;
+    string group_name = 2;
+}
+
+message CreateGroupResponse{
+
+}
+
+message RemoveGroupRequest{
+    string token = 1;
+    string group_name = 2;
+}
+
+message RemoveGroupResponse{
+
+}
+
+message GroupAddUserRequest{
+    string token = 1;
+    string group_name = 2;
+    string username = 3;
+}
+
+message GroupAddUserResponse{
+
+}
+
+message GroupRmUserRequest{
+    string token = 1;
+    string group_name = 2;
+    string username = 3;
+}
+
+message GroupRmUserResponse{
+
+}

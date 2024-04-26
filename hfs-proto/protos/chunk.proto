@@ -1,0 +1,130 @@
+syntax = "proto3";
+
+package chunk;
+
+service MasterChunk {
+    rpc StatusReport(StatusReportRequest) returns (StatusReportResponse);
+
+    rpc UploadComplete(UploadCompleteRequest) returns (UploadCompleteResponse);
+
+    rpc ReplicaDamage(ReplicaDamageRequest) returns (ReplicaDamageResponse);
+
+    rpc ChunkAdd(ChunkAddRequest) returns (ChunkAddResponse);
+}
+
+service Chunk {
+    // rpc ReplicaCopy(ReplicaCopyRequest) returns (ReplicaCopyResponse);
+
+    rpc ReplicaRecover(ReplicaRecoverRequest) returns (ReplicaRecoverResponse);
+
+    rpc ReplicaAdd(ReplicaAddRequest) returns (ReplicaAddResponse);
+
+    rpc ReplicaRemove(ReplicaRemoveRequest) returns (ReplicaRemoveResponse);
+}
+
+enum Status {
+    COMPLETE = 1;
+    UNDER_CONSTRUCTION = 2;
+    UNDER_RECOVER = 3;
+    COMMITTED = 4;
+    DAMAGE = 5;
+}
+
+message ChunkMetaInfo {
+    int64 chunk_id = 1;
+    uint32 chunk_size = 2;
+    uint32 num_bytes = 3;
+    uint32 version = 4;
+    Status status = 5;
+    repeated ReplicaInfo replicas = 6;
+}
+
+message ReplicaInfo {
+    uint32 server_id = 1;
+    int64 replica_id = 2;
+    Status status = 3;
+}
+
+message StatusReportRequest {
+    int64 chunk_id = 1;
+    int64 replica_id = 2;
+    uint32 num_bytes = 3;
+    uint32 size = 4;
+    uint32 version = 5;
+    uint32 server_id = 6;
+    bool is_update = 7;
+}
+
+message StatusReportResponse {}
+
+message UploadCompleteRequest {
+    int64 chunk_id = 1;
+    uint32 num_bytes = 2;
+    uint32 size = 3;
+    bool status = 4;
+}
+
+message UploadCompleteResponse {
+
+}
+
+message ReplicaDamageRequest {
+    int64 chunk_id = 1;
+    int64 replica_id = 2;
+    uint32 server_id = 3;
+}
+
+message ReplicaDamageResponse {
+
+}
+
+message ChunkAddRequest {
+
+}
+
+message ChunkAddResponse {
+    int64 chunk_id = 1;
+    repeated uint32 server_id = 2;    
+}
+
+// message ReplicaCopyRequest {
+//     // copied replica id;
+//     int64 src_id = 1;
+//     // copy replica id
+//     int64 target_id = 2;
+//     // copy server id
+//     uint32 server_id = 3;
+// }
+
+// message ReplicaCopyResponse {
+    
+// }
+
+message ReplicaRecoverRequest {
+    // recovered replica id;
+    int64 src_id = 1;
+    // complete replica id
+    int64 target_id = 2;
+    // complete replica server id
+    uint32 server_id = 3;
+}
+
+message ReplicaRecoverResponse {
+
+}
+
+message ReplicaAddRequest {
+    int64 chunk_id = 1;
+}
+
+message ReplicaAddResponse {
+    int64 replica_id = 1;
+}
+
+message ReplicaRemoveRequest {
+    repeated int64 replica_ids = 1;
+}
+
+message ReplicaRemoveResponse {
+
+}

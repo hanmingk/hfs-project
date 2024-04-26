@@ -1,0 +1,19 @@
+主服务器提供的功能
+一、租约服务
+ErrCode {
+
+}
+
+GetLeaseResponse {
+    status: Status,
+    lease_id: Option<u64>,
+    err_code: Option<ErrCode>,
+}
+
+1. rpc get_lease(resource_id: u64) -> GetLeaseResponse
+对外提供租约获取服务，如果获取成功则会返回lease_id, 如果获取失败则会返回错误码
+
+2. rpc keepalive(lease_id: u64, time: u64) -> KeepAliveResponse
+对外提供续约服务
+
+3. rpc cancle_lease(lease_id: u64) -> 
